@@ -44,6 +44,16 @@ function socketMain(nsp) {
             console.log(data);
             nsp.emit('message.add',msg);
         });
+
+        /*接收redis错误信息返回*/
+        socket.on('messageError',function(err){
+            console.log('messageError');
+            try{
+                nsp.emit('message.error',err.msg);
+            }catch(e){
+
+            }
+        });
     })
 }
 

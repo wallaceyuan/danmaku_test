@@ -9,6 +9,10 @@ const redis = require('redis');
 const {client,ip} = require('./test/redis');
 const domain = require('domain');
 const debug = require('debug')('socket-client:main');
+const user = require('./user');
+const {query} = require('./test/redis')
+
+
 
 var origin = io.connect(ip+'/', {reconnect: true});
 var chatroom = io.connect(ip+'/chatroom', {reconnect: true});
@@ -83,10 +87,39 @@ function popLogs(){
                 return;
             }
             console.log(' start '+' nsp: '+cid +' time: '+time);
-            if(namBox[cid]){
-                console.log(result);
-                namBox[cid].emit('redisCome',result);
-            }
+
+            async.waterfall([
+                function (done) {
+                    user.messageDirty({msg:result.msg},function(err,res){
+                        //console.log('sql done'/*,res*/);
+                        done(err,res);
+                    });
+                },
+                function (res,done) {
+                    user.messageValidate({msg:result.msg},function(err,res){
+                        //console.log('key done'/*,res*/);
+                        done(err,res);
+                    });
+                }
+            ],function (err,res) {
+                if(err){
+                    console.log('err!!!!',err,result);
+                    namBox[cid].emit('messageError',err);
+                }else{
+                    if(namBox[cid]) {
+                        console.log(result);
+                        query('insert into demo(message,createTime) values(?,?)',[result.msg,moment().unix()],function(err,results,fields){
+                            //do something
+                            if(err){
+                                console.log(err)
+                            }else {
+                                namBox[cid].emit('redisCome', result);
+                                console.log(results)
+                            }
+                        });
+                    }
+                }
+            })
         }
     });
 }
