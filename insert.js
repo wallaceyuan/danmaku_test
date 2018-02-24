@@ -5,7 +5,7 @@
 var {query} = require("./test/redis");
 const moment = require('moment')
 
-query('insert into demo(message,createTime) values(?,?)',[123,moment().unix()],function(err,results,fields){
+query('insert into demo(message,createTime) values(?,?)',['啊哈哈哈',moment().unix()],function(err,results,fields){
     //do something
     if(err){
         console.log(err)
