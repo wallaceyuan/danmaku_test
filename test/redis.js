@@ -20,6 +20,7 @@ var pool = mysql.createPool({
     database : 'danmaku'
 });
 
+
 var query = function(sql,options,callback){
     pool.getConnection(function(err,conn){
         if(err){
