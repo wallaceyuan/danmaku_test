@@ -13,7 +13,6 @@ const user = require('./user');
 const {query} = require('./test/redis')
 
 
-
 var origin = io.connect(ip+'/', {reconnect: true});
 var chatroom = io.connect(ip+'/chatroom', {reconnect: true});
 var live = io.connect(ip+'/live', {reconnect: true});
@@ -24,6 +23,7 @@ var broadcast = io.connect(ip+'/broadcast', {reconnect: true});
 var namBox = {root:origin,chatroom:chatroom,live:live,vod:vod,wechat:wechat,broadcast:broadcast};
 
 var reqDomain = domain.create();
+
 reqDomain.on('error', function (err) {
     console.log(err);
     try {
@@ -90,13 +90,13 @@ function popLogs(){
 
             async.waterfall([
                 function (done) {
-                    user.messageDirty({msg:result.msg},function(err,res){
+                    user.messageDirty({msg:result},function(err,res){
                         //console.log('sql done'/*,res*/);
                         done(err,res);
                     });
                 },
                 function (res,done) {
-                    user.messageValidate({msg:result.msg},function(err,res){
+                    user.messageValidate({msg:result},function(err,res){
                         //console.log('key done'/*,res*/);
                         done(err,res);
                     });
@@ -107,7 +107,6 @@ function popLogs(){
                     namBox[cid].emit('messageError',err);
                 }else{
                     if(namBox[cid]) {
-                        console.log(result);
                         query('insert into demo(message,createTime) values(?,?)',[result.msg,moment().unix()],function(err,results,fields){
                             //do something
                             if(err){

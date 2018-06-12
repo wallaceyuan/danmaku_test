@@ -22,7 +22,7 @@
 <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
     $(function () {
-        var socket = io.connect("http://127.0.0.1:4000/live");
+        var socket = io.connect('http://127.0.0.1:4000/live');
         $('form').submit(function(){
             socket.emit('chat message', $('#m').val());
             $('#m').val('');

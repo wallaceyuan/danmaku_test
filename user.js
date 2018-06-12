@@ -5,10 +5,10 @@ exports.messageDirty      = function(message,callback){
         //console.log('存在特殊字符');
         callback({"status":703,"msg":'存在特殊字符'},null);
     }else{
-        callback(null,0);
+        callback(null,message);
     }
 }
 
 exports.messageValidate      = function(message,callback){
-    callback(null,0);
+    callback(null,message);
 }

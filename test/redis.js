@@ -12,7 +12,7 @@ client.on("error", function(error) {
 // redis 验证 (reids.conf未开启验证，此项可不需要)
 // client.auth("foobared");
 
-var mysql      = require('mysql');
+var mysql   = require('mysql');
 var pool = mysql.createPool({
     host: 'localhost',
     user:'root',

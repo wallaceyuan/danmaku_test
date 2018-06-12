@@ -8,7 +8,7 @@ client.hset('filed002', 'key001', 'wherethersisadoor', function (err, res) {
         console.log(err);
     } else {
         console.log('res:', res);
-        client.hget('filed002', 'key001', function (err, getRslt) {
+        client.hget('filed002', 'key002', function (err, getRslt) {
             if (err) {
                 console.log(err);
             } else {
@@ -18,3 +18,4 @@ client.hset('filed002', 'key001', 'wherethersisadoor', function (err, res) {
         });
     }
 });
+

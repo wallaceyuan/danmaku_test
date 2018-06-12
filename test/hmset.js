@@ -3,6 +3,7 @@
  */
 const {client} = require('./redis')
 
+var qe = {a: 2, b:3, c:4};
 client.hmset('field003', qe, function(err, response) {
     console.log("err:", err);
     console.log("response:", response);
